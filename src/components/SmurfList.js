@@ -1,24 +1,30 @@
-import React from 'react';
-import Smurf from './Smurf';
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
- const SmurfList = ()=> {
-    const isLoading = false;
-    const testSmurf = {
-        id:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
-        name:'Poppa Smurf',
-        position:'Village Leader',
-        nickname: 'Pops',
-        description: 'Papa is the practical village leader and the father figure of 100 or so young Smurfs. He is easily identified by his red Smurf hat, pants, and a shortly-trimmed white beard and moustache.'
-    }
+import Smurf from "./Smurf";
+import { getSmurfsData } from "../actions/index";
 
-    if (isLoading) {
-        return <h1>Loading...</h1>;
-    }
+const SmurfList = () => {
+  const dispatch = useDispatch();
+  const { smurfs, loading } = useSelector((state) => state);
+  //console.log(smurfs);
 
-    return(<div className="listContainer">
-        <Smurf smurf={testSmurf}/>
-    </div>);
-}
+  useEffect(() => {
+    getSmurfsData(dispatch);
+  }, [getSmurfsData]);
+
+  if (loading) {
+    return <h1>Loading...</h1>;
+  }
+
+  return (
+    <div className="listContainer">
+      {smurfs.map((smurf) => (
+        <Smurf key={smurf.id} smurf={smurf} />
+      ))}
+    </div>
+  );
+};
 
 export default SmurfList;
 

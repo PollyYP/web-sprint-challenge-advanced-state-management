@@ -1,9 +1,32 @@
-
 export const initialState = {
-}
+  loading: false,
+  errorMessage: "",
+  smurfs: [],
+};
 
-const reducer = ()=>{
-}
+const reducer = (state = initialState, action) => {
+  switch (action.type) {
+    case "ADD_NEW_SMURF":
+      return {
+        ...state,
+        smurfs: [...state.smurfs, action.payload],
+      };
+    case "SET_ERROR_MESSAGE":
+      return {
+        ...state,
+        errorMessage: "Name, position and nickname fields are required.",
+      };
+    case "FETCHING_DATA_START":
+      return { ...state, loading: true };
+    case "FETCHING_DATA_SUCCESS":
+      return { ...state, loading: false, smurfs: action.payload };
+    case "FETCHING_DATA_FAILURE":
+      return { ...state, loading: false, error: action.payload };
+
+    default:
+      return state;
+  }
+};
 
 export default reducer;
 
